@@ -43,7 +43,6 @@ public class FrontControllerServletV4 extends HttpServlet {
             return;
         }
 
-
         //  개체 컬렉션을 반복하는 데 사용   asIterator    ( option + command + m ) 메서드를 밖으로 뺌
         Map<String, String> paramMap = createParamMap(request);
         Map<String, Object> model = new HashMap<>();
