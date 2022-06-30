@@ -15,11 +15,13 @@ public class ControllerV3HandlerAdapter implements MyHandlerAdapter {
 
     @Override
     public boolean supports(Object handler) {
+        //MemberFormControllerV3
         return (handler instanceof ControllerV3);   // 맞으면 True 반환
     }
 
     @Override
     public ModelView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
+        // MemberFormControllerV3
         ControllerV3 controllerV3 = (ControllerV3) handler;
 
         Map<String, String> paramMap = createParamMap(request);

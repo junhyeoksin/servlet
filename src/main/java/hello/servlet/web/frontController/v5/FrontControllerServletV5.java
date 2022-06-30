@@ -36,27 +36,31 @@ public class FrontControllerServletV5 extends HttpServlet {
     }
 
     private void initHandlerMappingMap() {
-        handlerMappingMap.put("/front-controller/v3/members/new-form", new MemberFormControllerV3());
-        handlerMappingMap.put("/front-controller/v3/members/save", new MemberSaveControllerV3());
-        handlerMappingMap.put("/front-controller/v3/members", new MemberListControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3()); // 반환값
+        handlerMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
     }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+        //  먼저 handler 을 찾는다. 반환되는 값: new MemberFormControllerV3()
         Object handler = getHandler(request);
 
         if (handler == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-
+        // adapter 을 찾음  -> 반환 : ControllerV3HandlerAdapter
         MyHandlerAdapter adapter = getHandlerAdapter(handler);
+
+        // ControllerV3HandlerAdapter 의 handle 호출
         ModelView mv = adapter.handle(request, response, handler);
 
 
         String viewName = mv.getViewName();
-        MyView view = viewResolver(viewName);
+        MyView view = viewResolver(viewName);   // viewResolver 로 view 를 찾고 렌더링
 
         view.render(mv.getModel(), request, response);
 
@@ -70,10 +74,12 @@ public class FrontControllerServletV5 extends HttpServlet {
         String requestURI = request.getRequestURI();
         return handlerMappingMap.get(requestURI);
     }
+
     private MyHandlerAdapter getHandlerAdapter(Object handler) {
+        // MemberFormControllerV3
         for (MyHandlerAdapter adapter : handlerAdapters) {
             if (adapter.supports(handler)) {
-                return  adapter;
+                return  adapter;  //  MemberFormControllerV3 반환
             }
         }
         throw new IllegalArgumentException("handler adapter를 찾을 수 없습니다. ");
