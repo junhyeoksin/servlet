@@ -1,3 +1,3 @@
 # servlet
 
-servlet -> front controller -> spring web mvc pattern
+servlet -> front controller -> spring web mvc (dispatcher controller)
